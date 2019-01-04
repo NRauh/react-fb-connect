@@ -37,4 +37,36 @@ class App extends Component {
   }
 }
 
+const FunctionApp = (props) => (
+  <div>
+    <h1>Hi {props.name}</h1>
+    <input
+      onChange={props.setName}
+      value={props.name}
+    />
+  </div>
+)
+
+const readMap = {
+  name: {
+    path: 'users/ibtNkmsRz2nhoKTAZHDs',
+    map: (doc) => doc.name,
+  },
+};
+
+connect(readMap);
+
+function connect(readMap) {
+  const propNames = Object.keys(readMap);
+
+  const fbRefs = propNames.reduce((refs, propName) => {
+    const docPath = readMap[propName].path;
+    const docRef = db.doc(docPath);
+
+    return refs.concat(docRef);
+  }, []);
+
+  console.log(fbRefs);
+}
+
 export default App;
